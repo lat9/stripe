@@ -4,7 +4,7 @@ require 'vendor/autoload.php';
 \Stripe\Stripe::setApiKey($secret_key);
 
 try {
-    global $db,$output,$param_json;
+    global $db, $output, $param_json;
     if ($registered_customer === false && $test_mode === false){
         $customer = \Stripe\Customer::create([
             'email' => $email,
@@ -51,12 +51,12 @@ try {
 
 } catch (Error $e) {
     http_response_code(500);
-    $clientS_json =json_encode(['error' => $e->getMessage()]);
+    $clientS_json = json_encode(['error' => $e->getMessage()]);
 }
    
 $jason_publishable_key = json_encode($publishable_key);
 $jason_PaymentSuccess = json_encode(TEXT_PAYMENT_STRIPE_PAYMENTSUCCEEDED);
-$jason_FormLayout = json_encode(MODULE_PAYMENT_STRIPE_LAYOUT);
+$jason_FormLayout = json_encode(strtolower(MODULE_PAYMENT_STRIPE_LAYOUT));
 
 global $current_page_base;
 if (defined('FILENAME_CHECKOUT_ONE_CONFIRMATION') && $current_page_base === FILENAME_CHECKOUT_ONE_CONFIRMATION) {
@@ -78,7 +78,7 @@ $_SESSION['paymentIntent'] = $paymentIntent['id'];
 //echo $paymentIntent['id'];
 //------------
 ?>
-<script>
+<script id="stripe-data">
    'use strict';
     var clientS = JSON.parse('<?= $clientS_json ?>'); 
     var PublishableKey = JSON.parse('<?= $jason_publishable_key ?>'); 

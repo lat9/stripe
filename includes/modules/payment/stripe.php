@@ -47,7 +47,7 @@ class stripe extends base
      * $sort_order is the order priority of this payment module when displayed
      * @var int|null
      */
-    public int ?$sort_order;
+    public ?int $sort_order;
 
     // class constructor
     public function __construct()
@@ -178,9 +178,7 @@ class stripe extends base
         }
         $stripe_select = 'True';
 
-        if ($_SESSION['paymentIntent'] == '' ){
-            require_once 'stripepay/create.php' ;
-        }
+        require 'stripepay/create.php' ;
     }
 
     public function confirmation()
@@ -252,7 +250,7 @@ class stripe extends base
   
                 ('Payment Succeeded Message:', 'TEXT_PAYMENT_STRIPE_PAYMENTSUCCEEDED', 'Payment succeeded. Please wait a few seconds!', 'The message will be displayed after payment succeeded. If you do not want to display it, leave it blank.', 6, 1, NULL, now(), NULL, NULL , NULL),
 
-                ('Form Layout', 'MODULE_PAYMENT_STRIPE_LAYOUT', 'Tabs', 'Select stripe layout Tabs or Accordion.', 6, 1, NULL, now(), NULL, 'zen_cfg_select_option(['Tabs\', \'Accordion\'] ', NULL)"
+                ('Form Layout', 'MODULE_PAYMENT_STRIPE_LAYOUT', 'Tabs', 'Select stripe layout Tabs or Accordion.', 6, 1, NULL, now(), NULL, 'zen_cfg_select_option([\'Tabs\', \'Accordion\'], ', NULL)"
         );
     }
 
