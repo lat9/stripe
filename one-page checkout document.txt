@@ -1,0 +1,3 @@
+After the module installation, One-page checkout settings must be changed.
+1. Open admin page =>Configuration => One-Page Checkout Settings =>One-Page Checkout Settings
+2. Add "Stripe" and push Update button.

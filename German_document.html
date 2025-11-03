@@ -1,0 +1,115 @@
+<P align="right"><A href="https://www.yokane.co.jp">Nihon Yokane corporation</A></P>
+<h2><font size="+1"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Stripe Secure Payment Module-Anweisungen fur Zen-Cart</font></font></font></h2>
+<p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Einfuhrung</font></font></p>
+<ol>
+  <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Dieses Modul wird fur die sichere Zahlung mit Stripe verwendet. Sie mussen sich bei der Firma Stripe anmelden und einen Vertrag abschliesen.</font></font></li>
+  <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Stripe unterstutzt die Abwicklung von Zahlungen in uber 135 </font></font><a href="https://stripe.com/docs/currencies"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Wahrungen</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> und das Modul unterstutzt auch uber 135 Wahrungen.</font></font></li>
+  <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Sie sollten diese Anweisungen vor der Installation, nach der Installation und wahrend des Betriebs befolgen.</font></font></li>
+</ol>
+<ul>
+  <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Vor der Installation: Sichern Sie alle Datenbanken, Ordner und Dateien. </font><font style="vertical-align: inherit;">Sichern Sie insbesondere uberschriebene Dateien. </font><font style="vertical-align: inherit;">Die Installation erfolgt auf eigene Verantwortung.</font></font></li>
+  <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Nach der Installation: Uberprufen Sie den Betrieb im Testmodus. </font><span class="Y2IQFc" lang="en"><a href="https://dashboard.stripe.com/test/payments?status[0]=successful"><font style="vertical-align: inherit;">Prufen Sie auf der Stripe-Dashboard-Seite</font></a></span></font><span class="Y2IQFc" lang="en"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> , ob der Zahlungsbetrag korrekt ist </font><font style="vertical-align: inherit;">. </font><font style="vertical-align: inherit;">Vergleichen Sie mit der Gesamtsumme der Bestellung auf der Zen-Warenkorb-Administrationsseite Kunden =&gt; Bestellungen. Stellen Sie sicher, dass beide gleich sind.</font></font></span></li>
+  <li><SPAN class="HwtZe" jsaction="mouseup:BR6jm" jsname="jqKxS" lang="en"><SPAN jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" jsname="txFAF" class="jCAhz ChMk0b" jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsaction="click:E6Tfl,GFf3ac,tMZCfe; contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje" jsname="W297wb"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Betrieb: Der Testmodus ist der Standardwert, wenn dieses Modul installiert ist. </font><font style="vertical-align: inherit;">Vergessen Sie nach dem Test nicht, den Testmodus auf ?false“ zu setzen. Geben Sie den von </font></font><SPAN class="HwtZe" jsaction="mouseup:BR6jm" jsname="jqKxS" lang="en"><SPAN jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" jsname="txFAF" class="jCAhz ChMk0b" jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsaction="click:E6Tfl,GFf3ac,tMZCfe; contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje" jsname="W297wb"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Stripe</font></font></SPAN></SPAN></SPAN><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> bereitgestellten geheimen Schlussel nicht preis .</font></font></SPAN></SPAN></SPAN></li>
+  <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">WICHTIG: Nachdem Sie den API-Schlussel geandert haben, mussen Sie die folgenden Schritte ausfuhren. </font></font><br>
+  <font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Gehen Sie zu Admin =&gt; Tools =&gt; Seite SQL-Patches installieren. </font><font style="vertical-align: inherit;">Laden Sie die Datei erase_stripe_recordes.sql hoch oder fugen Sie den PHP-Code ein TRUNCATE ` stripe `; </font><font style="vertical-align: inherit;">in das Textfeld "Geben Sie die auszufuhrende Abfrage ein:" ein. </font><font style="vertical-align: inherit;">und drucken Sie die Schaltflache "Senden".
+  </font></font></li>
+  <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Wir &uuml;bernehmen keine Haftung und Verantwortung f&uuml;r Schaden, Verluste und Kosten, die durch die Verwendung von dieses Modul verursacht werden, daher mussen Sie das Modul im Testmodus uberprufen und bestatigen, dass es auch nach dem Testen normal funktioniert.
+</font></font></li>
+</ul>
+<p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Installation</font></font></p>
+<ol>
+  <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Entpacken Sie die heruntergeladene Datei.</font></font></li>
+  <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Andern Sie den Namen des Vorlagenordners von YOUR_TEMPLATE in Ihren Vorlagennamen.
+            </font></font>
+  <ul>
+    <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Benennen Sie den Ordner YOUR_TEMPLATE in Stripe_module_zcxxx/www/includes/templates in Ihren Vorlagennamen um.</font></font></li>
+  </ul>
+  </li>
+  <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Laden Sie alle Dateien hoch
+            </font></font>
+  <ul>
+    <li><SPAN class="HwtZe" jsaction="mouseup:BR6jm" jsname="jqKxS" lang="en"><SPAN jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" jsname="txFAF" class="jCAhz ChMk0b" jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsaction="click:E6Tfl,GFf3ac,tMZCfe; contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje" jsname="W297wb"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Fugen Sie den Ordner Stripe_module_zcxxx</font></font></SPAN></SPAN></SPAN><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> =&gt;www=&gt;includes in den Ordner include</font></font><SPAN class="HwtZe" jsaction="mouseup:BR6jm" jsname="jqKxS" lang="en"><SPAN jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" jsname="txFAF" class="jCAhz ChMk0b" jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsaction="click:E6Tfl,GFf3ac,tMZCfe; contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje" jsname="W297wb"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> des Zen-Cart ein.</font></font></SPAN></SPAN></SPAN></li>
+  </ul>
+  </li>
+  <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Die Spalte "Stripe-Zahlung: Kreditkarte" wird auf der Seite admin=&gt;Module=&gt;Paymet hinzugefugt. </font><font style="vertical-align: inherit;">und wahlen Sie es aus.</font></font><img src="img_document/image12.jpg" width="447" height="254" border="0"></li>
+  <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Nachdem Sie auf die Schaltflache ?+ Modul installieren“ geklickt haben, wird das Stripe-Zahlungsmodul installiert und die folgenden Elemente werden angezeigt.
+            </font></font>
+  <ul>
+    <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Sicheres Stripe-Zahlungsmodul aktivieren: True/False Standard: True</font></font></li>
+    <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Testmodus Sicheres Stripe-Zahlungsmodul: True/False Standard: True</font></font></li>
+    <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Zahlungszone: Wenn eine Zone ausgewahlt ist, aktivieren Sie diese Zahlungsmethode nur fur diese Zone. </font><font style="vertical-align: inherit;">Standard:leer</font></font></li>
+    <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Bestellstatus festlegen: Setzt den Status von Bestellungen, die mit diesem Zahlungsmodul getatigt wurden, auf diesen Wert Standard: 0</font></font></li>
+    <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Veroffentlichbarer API-Schlussel: Geben Sie den veroffentlichbaren API-Schlussel ein, der von Stripe bereitgestellt wird</font></font></li>
+    <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">API-Geheimschlussel: Geben Sie den von Stripe bereitgestellten API-Geheimschlussel ein</font></font></li>
+    <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Testmodus ? API-veroffentlichbarer Schlussel: Geben Sie den von Stripe bereitgestellten API-veroffentlichbaren Testschlussel ein</font></font></li>
+    <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Testmodus - Geheimer API-Schlussel: Geben Sie den von Stripe bereitgestellten geheimen API-Testschlussel ein
+                    </font></font></li>
+    <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Zahlungserfolgsmeldung: Die Meldung wird nach erfolgreicher Zahlung angezeigt. Wenn Sie es nicht anzeigen möchten, lassen Sie es leer.</font></font></li>
+  </ul>
+  </li>
+</ol>
+<P>Upgrade</P>
+<OL>
+  <LI><FONT style="vertical-align: inherit;">Entpacken Sie die heruntergeladene Datei.</FONT>
+  <LI>    Öffnen Sie den Bildschirm Admin = &gt; Tools = &gt; SQL-Patches installieren, klicken Sie auf die Schaltfläche Hochladen, wählen Sie die folgende angehängte Datei aus und klicken Sie auf die Schaltfläche Hochladen.
+  <br>Von Stripe Payment Module Version 2.1.7 und früher: mysql_upgrade_to_2.1.7.sq und mysql_upgrade_to_2.1.14.sq
+  <br>Von Stripe Payment Module Version 2.1.14 und früher: mysql_upgrade_to_2.1.14.sq
+  <br>
+  <LI>Die folgenden Schritte entsprechen dem Verfahren der Installation.
+</OL>
+<p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Testmodus - Stripeenzahlungsmodus (Sie mussen das Modul vor dem Betrieb uberprufen.)　</font></font></p>
+<ol>
+  <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Admin-Seite (Testmodus)
+  </font></font>
+  <ul>
+    <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Geben Sie API Publishable key , API Secret key , Test Mode API Publishable Test Key und Test Mode - API Secret Test Key ein. </font><font style="vertical-align: inherit;">und Drucken Sie die Schaltflache Aktualisieren.
+    </font></font></li>
+  </ul>
+  </li>
+  <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Titelseite speichern (Testmodus)
+  </font></font>
+  <ul>
+    <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Legen Sie einige Produkte in den Warenkorb. </font><font style="vertical-align: inherit;">und gehen Sie zur Check-out-Seite.</font></font></li>
+    <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Nach Auswahl des Stripe-Zahlungsformulars: Kreditkarte wird das Stripe-Kreditkartenformular wie folgt angezeigt. </font><font style="vertical-align: inherit;">Wenn das Kreditzahlungsformular nicht angezeigt wird, haben Sie moglicherweise den falschen API-Schlussel eingegeben.</font></font></li>
+    <li><img src="img_document/image5.jpg" width="480" height="351" border="0"></li>
+  </ul>
+  <ul>
+    <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Geben Sie die Kreditkartennummer des Testvisums ein 4242 4242 4242 4242 、 Ablaufdatum ist nach dem nachsten Monat , Geben Sie eine zufallige 3-stellige Zahl in den CVC ein. </font><font style="vertical-align: inherit;">Und drucken Sie die Schaltflache "Bestellung bestatigen". 
+    </font></font></li>
+    <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Gehen Sie zum </font></font><a href="https://dashboard.stripe.com/dashboard"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Stripe-Dashboard. </font></font></a><a href="https://dashboard.stripe.com/payments?status[0]=successful"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Klicken Sie auf die Schaltflache ?Zahlungen und</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> erfolgreich“. Uberprufen Sie die Informationen zum Gesamtbetrag, zum Kundennamen und zur E-Mail-Adresse.
+    
+   
+
+</font></font>
+    <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">　HINWEIS: </font></font><SPAN class="HwtZe" jsaction="mouseup:BR6jm" jsname="jqKxS" lang="en"><SPAN jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" jsname="txFAF" class="jCAhz ChMk0b" jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsaction="click:E6Tfl,GFf3ac,tMZCfe; contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje" jsname="W297wb"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Das System von Stripe multipliziert Wahrungen mit 2 Dezimalstellen, wie z. B. USD und EUR, mit 100, bevor sie an die Server von Stripe gesendet werden. Der Stripe-Server konvertiert die empfangene Zahl in 1/100 und verwaltet sie. </font><font style="vertical-align: inherit;">Japanische Yen haben kein Dezimalkomma, daher wird die Zahl unverandert an Stripe-Server gesendet. Dieses Modul konvertiert automatisch fur jede Wahrung, aber testen Sie es mit allen Wahrungen, die Sie verwenden, bevor Sie es verwenden. </font><font style="vertical-align: inherit;">Wir &uuml;bernehmen keine Haftung und Verantwortung f&uuml;r Sch&auml;den, Verluste und Kosten, die durch die Verwendung von dieses Modul verursacht werden.</font></font></SPAN></SPAN></SPAN><br>
+    <br>
+    <font style="vertical-align: inherit;"><font style="vertical-align: inherit;">So loschen Sie die Kreditkarteninformationen des Kunden von der Storefront-Seite. </font></font><br>
+    　<SPAN class="HwtZe" jsaction="mouseup:BR6jm" jsname="jqKxS" lang="en"><SPAN jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" jsname="txFAF" class="jCAhz ChMk0b" jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsaction="click:E6Tfl,GFf3ac,tMZCfe; contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje" jsname="W297wb"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Die Kreditkarteninformationen des Kunden werden verschlusselt und in der Datenbank registriert, konnen aber nach Ermessen des Kunden geloscht werden.</font></font></SPAN></SPAN> </SPAN><br>
+    　<SPAN class="HwtZe" jsaction="mouseup:BR6jm" jsname="jqKxS" lang="en"><SPAN jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" jsname="txFAF" class="jCAhz ChMk0b" jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsaction="click:E6Tfl,GFf3ac,tMZCfe; contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje" jsname="W297wb"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Der Kunde kann sie mit der Stripe-Schaltflache zum Loschen von Kreditkarteninformationen auf der Seite ?Mein Konto“ loschen. </font><font style="vertical-align: inherit;">Nach dem Loschen verschwindet diese Anzeige.</font></font></SPAN></SPAN></SPAN><br>
+    <br>
+    <img src="img_document/image6.jpg" width="467" height="216" border="0"></p>
+    <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Betrieb (nach dem Test)</font></font></p>
+    <ol>
+      <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Gehen Sie zu Admin =&gt; Module =&gt; Zahlungsseite. </font><font style="vertical-align: inherit;">Wahlen Sie Stripe Payment : Credit Card und klicken Sie auf die Schaltflache Bearbeiten.</font></font></li>
+      <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Schalten Sie das Optionsfeld Testmodus Stripe Secure Payment Module von True auf False um. </font><font style="vertical-align: inherit;">und drucken Sie die Schaltflache Aktualisieren.</font></font></li>
+      <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Stellen Sie sicher, dass im Feld Stripe Payment : Credit Card nichts rot angezeigt wird. 
+  </font></font></li>
+      <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Stellen Sie sicher, dass der rote "STRIPE IS IN TESTING MODE" nicht oben auf den Storefront-Seiten angezeigt wird. 
+</font></font></li>
+    </ol>
+    <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">WICHTIG: Nachdem Sie den API-Schlussel geandert haben, mussen Sie die folgenden Schritte ausfuhren. </font></font><br>
+    <font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Gehen Sie zu Admin =&gt; Tools =&gt; Seite SQL-Patches installieren. </font><font style="vertical-align: inherit;">Laden Sie die Datei erase_stripe_recordes.sql hoch oder fugen Sie den PHP-Code ein TRUNCATE ` stripe `; </font><font style="vertical-align: inherit;">in das Textfeld "Geben Sie die auszufuhrende Abfrage ein:" ein. </font><font style="vertical-align: inherit;">und drucken Sie die Schaltflache "Senden". </font></font><br>
+    <font style="vertical-align: inherit;"><font style="vertical-align: inherit;">HINWEIS: Nach dem Andern des API-Schlussels die Bedeutung der Ausfuhrung des obigen SQL. </font><font style="vertical-align: inherit;">Der API-Schlussel und die Stripe-Kunden-ID hangen zusammen, wenn also der API-Schlussel geandert wird, wird die falsche Stripe-Kunden-ID an den Stripe-Server gesendet und das Stripe-Zahlungsformular verschwindet. </font><font style="vertical-align: inherit;">Alle Stripe-Kunden-IDs werden durch das oben beschriebene Verfahren geloscht.</font></font><br>
+    <br>
+    <font style="vertical-align: inherit;"><font style="vertical-align: inherit;">HINWEIS: Wenn Sie das Stripe-Dashboard =&gt; Zahlungen =&gt; Alle Seite offnen, finden Sie viele unvollstandige Zahlungen. </font><font style="vertical-align: inherit;">Weil der Stripe-Server jedes Mal pi_xxxxxxxxxxxxxxx erstellt, wenn die Check-out-Bestatigungsseite des Zencart-Warenkorbs angezeigt wird. </font><font style="vertical-align: inherit;">und der Stripe-Server erstellt zwei pi_xxxxxxxxxxxxxxx fur jede Zahlung. </font><font style="vertical-align: inherit;">Die Ursache liegt in der Spezifikation von Stripe-Server und Zencart.</font></font><br>
+    </p>
+    <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Deinstallation</font></font></p>
+    <ol>
+      <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Gehen Sie zur Seite Admin=&gt;Module=&gt;Zahlung. </font><font style="vertical-align: inherit;">Wahlen Sie "Stripe-Zahlung: Kreditkarte". </font><font style="vertical-align: inherit;">und drucken Sie die Deinstallationstaste. 
+  </font></font></li>
+      <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Gehen Sie zu Admin =&gt; Tools =&gt; Seite SQL-Patches installieren. </font><font style="vertical-align: inherit;">Laden Sie die Datei uninstall_stripe.sql hoch oder fugen Sie den PHP-Code ein DROP TABLE IF EXISTS `stripe`; </font><font style="vertical-align: inherit;">in das Textfeld "Geben Sie die auszufuhrende Abfrage ein:" ein. </font><font style="vertical-align: inherit;">und drucken Sie die Schaltflache "Senden".
+</font></font></li>
+    </ol>
+    <p></p>
+  </ul>
+</ol>
