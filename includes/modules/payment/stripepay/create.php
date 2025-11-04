@@ -1,4 +1,53 @@
 <?php
+// -----
+// Note: This section was previously in the base stripe.php's
+// pre_confirmation_check method.
+//
+global $order, $db, $stripe_select;
+
+if (MODULE_PAYMENT_STRIPE_TEST_MODE === 'True') {
+    $publishable_key = MODULE_PAYMENT_STRIPE_PUBLISHABLE_TEST_KEY;
+    $secret_key = MODULE_PAYMENT_STRIPE_SECRET_TEST_KEY;
+    $test_mode = true;
+} else {
+    $publishable_key = MODULE_PAYMENT_STRIPE_PUBLISHABLE_KEY;
+    $secret_key = MODULE_PAYMENT_STRIPE_SECRET_KEY;
+    $test_mode = false;
+}
+
+$payment_currency = $order->info['currency'];
+$Xi_currency = ['BIF', 'CLP', 'DJF', 'GNF', 'JPY', 'KMF', 'KRW', 'MGA', 'PYG', 'RWF', 'UGX', 'VND', 'VUV', 'XAF', 'XOF', 'XPF'];
+$Xiooo_currency = ['BHD', 'JOD', 'KWD', 'OMR',' TND'];
+
+if (in_array($payment_currency, $Xi_currency) === true ) {
+    $multiplied_by = 1;
+    $decimal_places = 0;
+} elseif (in_array($payment_currency, $Xiooo_currency) === true ) {
+    $multiplied_by = 1000;
+    $decimal_places = 2;
+} else {
+    $multiplied_by = 100;
+    $decimal_places = 2;
+}
+
+if (isset($_SESSION['opc_saved_order_total'])) {
+    $order_value = $_SESSION['opc_saved_order_total'];
+} elseif (defined('MODULE_ORDER_TOTAL_LOWORDERFEE_LOW_ORDER_FEE') && MODULE_ORDER_TOTAL_LOWORDERFEE_LOW_ORDER_FEE === 'true' && MODULE_ORDER_TOTAL_LOWORDERFEE_ORDER_UNDER >= $order->info['total']) {
+    $order_value = $order->info['total'] + MODULE_ORDER_TOTAL_LOWORDERFEE_FEE ;
+} else {
+    $order_value = $order->info['total'];
+}
+$amount_total = round($order_value * $order->info['currency_value'], $decimal_places) * $multiplied_by;
+
+$fullname = $order->billing['firstname'] . ' ' . $order->billing['lastname'];
+$email = $order->customer['email_address'];
+$user_id = $_SESSION['customer_id'];
+$registered_customer = false;
+$stripe_customer = $db->Execute("SELECT Stripe_Customers_id FROM " . TABLE_STRIPE . " WHERE customers_id = " . (int)$_SESSION['customer_id'] . " LIMIT 1");
+if (!$stripe_customer->EOF) {
+    $registered_customer = true;
+}
+
 require 'vendor/autoload.php';
 
 \Stripe\Stripe::setApiKey($secret_key);
@@ -8,7 +57,7 @@ try {
     if ($registered_customer === false && $test_mode === false){
         $customer = \Stripe\Customer::create([
             'email' => $email,
-            'name'   => $fullname,
+            'name' => $fullname,
         ]);
 
         global $stripeCustomerID;

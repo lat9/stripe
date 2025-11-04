@@ -1,5 +1,9 @@
 <?php
 if (defined('MODULE_PAYMENT_STRIPE_STATUS') && MODULE_PAYMENT_STRIPE_STATUS === 'True' && $stripe_select === 'True') {
+    // -----
+    // Gather the order data-related values needed by checkout.js.
+    //
+    require DIR_FS_CATALOG . DIR_WS_MODULES . 'payment/stripepay/create.php';
 ?>
 <script src="https://js.stripe.com/v3/"></script>
 <script id="stripe-form">
@@ -14,6 +18,8 @@ $(document).ready(function(){
     $('#checkout_confirmation').before(stripeForm);
 
     <?= file_get_contents('includes/checkout.js') ?>
+
+    $('div.confirm-order, #checkoutConfirmationDefault-btn-toolbar').hide();
 });
 </script>
 <?php
