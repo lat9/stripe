@@ -43,9 +43,9 @@ async function handleSubmit(e) {
     if (response.error) {
         showMessage(response.error.message);
     } else {
-        document.getElementById('checkoutConfirmDefaultHeading').textContent = PaymentSuccess;
         showMessage(PaymentSuccess);
-        document.getElementById("btn_submit").click();
+        $('div.confirm-order, #checkoutConfirmationDefault-btn-toolbar, #checkoutOneConfirmationButtons').show();
+        document.getElementById('btn_submit').click();
     }
     setLoading(false);
 }
@@ -64,20 +64,17 @@ async function checkStatus() {
 
     switch (paymentIntent.status) {
         case "succeeded":
-            document.getElementById('checkoutConfirmDefaultHeading').textContent = PaymentSuccess;
             showMessage(PaymentSuccess);
-            document.getElementById("btn_submit").click();
+            $('div.confirm-order, #checkoutConfirmationDefault-btn-toolbar, #checkoutOneConfirmationButtons').show();
+            document.getElementById('btn_submit').click();
             break;
         case "processing":
-            document.getElementById('checkoutConfirmDefaultHeading').textContent = 'Your payment is processing.';
             showMessage("Your payment is processing.");
             break;
         case "requires_payment_method":
-            document.getElementById('checkoutConfirmDefaultHeading').textContent = 'Your payment was not successful, please try again.';
             showMessage("Your payment was not successful, please try again.");
             break;
         default:
-            document.getElementById('checkoutConfirmDefaultHeading').textContent = 'Something went wrong.';
             showMessage("Something went wrong.");
             break;
     }
