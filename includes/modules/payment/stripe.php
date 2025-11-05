@@ -157,6 +157,17 @@ class stripe extends base
     function after_process()
     {
         unset($_SESSION['order_add_comment'], $_SESSION['paymentIntent']);
+
+        // -----
+        // If an additional message is to be associated with a Stripe-paid order ...
+        //
+        if (MODULE_PAYMENT_STRIPE_TEXT_NOTICES_TO_CUSTOMER === '') {
+            return;
+        }
+
+        // Adding the instructions to the Order Status History, will be visible but will not generate a new email.
+        global $insert_id;
+        zen_update_orders_history($insert_id, MODULE_PAYMENT_STRIPE_TEXT_NOTICES_TO_CUSTOMER, null, -1, 0);
     }
 
     public function get_error()
