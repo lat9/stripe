@@ -5,6 +5,8 @@
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
  * @version $Id: brittainmark 2022 Sep 10 Modified in v1.5.8 $
+ *
+ * Last updated: Stripe v3.0.0
  */
 class stripe extends base
 {
@@ -79,7 +81,27 @@ class stripe extends base
             if (strpos(MODULE_PAYMENT_STRIPE_PUBLISHABLE_TEST_KEY, '_test_') === false || strpos(MODULE_PAYMENT_STRIPE_SECRET_TEST_KEY, '_test_') === false) {
                 $this->title .= '<span class="alert"> (Test key not entered in the test mode field)</span>';
             }
+
+            if (!defined('MODULE_PAYMENT_STRIPE_LAYOUT')) { //- Added in v2.1.14
+                $db->Execute(
+                    "INSERT INTO " . TABLE_CONFIGURATION . "
+                        (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, last_modified, date_added, use_function, set_function, val_function)
+                     VALUES
+                        ('Form Layout', 'MODULE_PAYMENT_STRIPE_LAYOUT', 'Tabs', 'Select stripe layout Tabs or Accordion.', 6, 1, NULL, now(), NULL, 'zen_cfg_select_option([\'Tabs\', \'Accordion\'], ', NULL)"
+                );
+            }
+
+            if (!defined('TEXT_PAYMENT_STRIPE_PAYMENTSUCCEEDED')) { //- Added in v2.1.7
+                $db->Execute(
+                    "INSERT INTO " . TABLE_CONFIGURATION . "
+                        (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, last_modified, date_added, use_function, set_function, val_function)
+                     VALUES
+                        ('Payment Succeeded Message:', 'TEXT_PAYMENT_STRIPE_PAYMENTSUCCEEDED', 'Payment succeeded. Please wait a few seconds!', 'The message will be displayed after payment succeeded. If you do not want to display it, leave it blank.', 6, 1, NULL, now(), NULL, NULL , NULL)"
+                );
+            }
         }
+
+        $this->email_footer = MODULE_PAYMENT_STRIPE_TEXT_NOTICES_TO_CUSTOMER;
 
         if ((int)MODULE_PAYMENT_STRIPE_STATUS_ID > 0) {
             $this->order_status = (int)MODULE_PAYMENT_STRIPE_STATUS_ID;
@@ -225,6 +247,8 @@ class stripe extends base
     {
         global $db;
         $db->Execute("DELETE FROM " . TABLE_CONFIGURATION . " WHERE configuration_key in ('" . implode("', '", $this->keys()) . "')");
+
+        $db->Execute("DROP TABLE IF EXISTS " . DB_PREFIX  . 'stripe');  
     }
 
     public function keys() 
