@@ -5,7 +5,7 @@ if (defined('MODULE_PAYMENT_STRIPE_STATUS') && MODULE_PAYMENT_STRIPE_STATUS === 
     //
     require DIR_FS_CATALOG . DIR_WS_MODULES . 'payment/stripepay/create.php';
 ?>
-<script src="https://js.stripe.com/v3/"></script>
+<script src="https://js.stripe.com/clover/stripe.js"></script>
 <script id="stripe-form">
 $(document).ready(function(){
     let stripeForm = $('<form>', {'id': 'payment-form'});
