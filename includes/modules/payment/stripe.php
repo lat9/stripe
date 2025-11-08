@@ -212,7 +212,7 @@ class stripe extends base
     {
         global $db, $messageStack;
 
-        $db->Execute("DROP TABLE IF EXISTS " . DB_PREFIX  . "stripe ;");  
+        $db->Execute("DROP TABLE IF EXISTS " . DB_PREFIX  . 'stripe');  
         $db->Execute("CREATE TABLE  " . DB_PREFIX  . "stripe (id INT(11) AUTO_INCREMENT PRIMARY KEY, customers_id INT(11), Stripe_Customers_id VARCHAR(32))");
 
         $db->Execute(
