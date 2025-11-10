@@ -1,0 +1,169 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <title>Module de paiement Stripe pour Zen Cart</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="vinos_favicon.ico" type="image/x-icon">
+  <style>
+a, a:active,
+a:visited {
+    color: #006666;
+}
+a:hover {
+    color:#00CC99;
+}
+body,
+p,
+h1,
+h2,
+h3,
+h4,
+li,
+td {
+    font-family: Verdana, AvantGarde, Tahoma, Arial, sans-serif;
+    font-size: 10pt;
+    color: black;
+    padding: 0px;
+    margin: 20px;
+}
+pre {
+    margin: 20px;
+}
+h1,
+h2,
+h3,
+h4 {
+    font-weight: bold
+}
+h1 {
+    font-size: 20px;
+}
+h2 {
+    font-size: 16px;
+    border-top: 1px solid black;
+    padding-top: 5px;
+}
+ol li,
+ul li {
+    margin: 5px 0;
+}
+.corefile,
+.impt {
+    color: red;
+}
+.added {
+    color: blue;
+}
+img {
+    margin-left: 20px;
+    max-width: 95%;
+}
+.removed {
+    text-decoration: line-through;
+}
+.smaller {
+    font-size: smaller;
+}
+table {
+    margin-left: 20px;
+}
+table, table th, table td {
+    padding: 0.5rem;
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+th, td {
+    text-align: left;
+}
+table table {
+    margin-top: 0.5rem;
+}
+.event-group {
+    text-transform: uppercase;
+    border-top: 1px solid black;
+    padding-top: 0.5rem;
+}
+.text-center {
+    text-align: center;
+}
+  </style>
+<meta http-equiv="Content-Language" content="fr"></head>
+<body>
+<h1>Module de paiement sécurisé Stripe pour Zen Cart v3.0.0</h1>
+<h2>Introduction</h2>
+<p>Ce module de paiement Zen Cart est utilisé pour les transactions de paiement sécurisé Stripe. Vous devez signer un contrat avec la société Stripe pour recevoir les clés publiables et secrètes nécessaires au fonctionnement du module. Stripe prend en charge le traitement des paiements dans plus de <a href="https://stripe.com/docs/currencies">135 devises</a>.</p>
+<p>Supporte actuellement Zen Cart version 1.5.8 et ultérieure et PHP 8.0.0 et ultérieure. Également validé avec One-Page Checkout v2.5.5 et le template ZCA Bootstrap v3.7.8.</p>
+<p><b>Notes :</b></p>
+<ol>
+    <li>Nous n’assurons pas les dommages monétaires causés par ce module, vous devez donc vérifier le module en utilisant le mode de fonctionnement Test et confirmer qu’il fonctionne normalement même après le test !</li>
+    <li>Le système de Stripe multiplie par 100 les devises avec 2 décimales, comme USD et EUR, avant de les envoyer aux serveurs de Stripe. Le serveur Stripe convertit le numéro reçu en 1/100 et le gère. Le yen japonais n’a pas de point décimal, donc le nombre est envoyé aux serveurs Stripe tel quel. Ce module convertit automatiquement pour chaque devise, mais le teste avec toutes les devises que vous utilisez avant de l’utiliser.</li>
+    <li>Si vous ouvrez le tableau de bord Stripe =&gt; Paiements =&gt; Toute la page, vous trouverez de nombreux paiements incomplets. Parce que le serveur Stripe crée des pi_xxxxxxxxxxxxx chaque fois que la page de confirmation d’extraction du panier Zen s’affiche. et le serveur Stripe crée deux pi_xxxxxxxxxxxxx pour chaque paiement. La cause est due à la spécification de stripe server et Zencart.</li>
+    <li>Si votre site utilise <a href="https://www.zen-cart.com/downloads.php?do=file&id=2095" target="_blank">Paiement sur une page (OPC)</a>, vous <b class="impt">doit</b> add <code>rayure</code> à la liste séparée par des virgules des méthodes de paiement nécessitant une confirmation (<b>Configuration : : Paramètres de paiement sur une page : : Méthodes de paiement nécessitant une confirmation</b>).</li>
+</ol>
+
+<h2>Installation et mise à niveau</h2>
+<h3>Mise à niveau d’une version antérieure vers la v3.0.0</h3>
+<p>v3.0.0 et plus tard du module de paiement est <em>très</em>  différent des versions antérieures à v3.0.0.  Il n’y a plus d’écrasement de fichier core ou de modifications de fichier modèle nécessaires (ou souhaitées).</p>
+<p>Lors de la mise à niveau vers v3.0.0 et versions ultérieures depuis une version antérieure à v3.0.0, vous devez d’abord supprimer divers fichiers et modifications requis par ces versions précédentes.  Voir cet article du wiki GitHub pour plus de détails.</p>
+<p><b class="impt">IMPORTANT :</b> Après avoir modifié la clé API ou l’état du mode de test du module de paiement, vous devez effacer tous les enregistrements existants dans le tableau de la base de données du module de paiement :<ol>
+    <li>Accédez aux outils de l’administrateur : : Installer l’outil SQL Patches.</li>
+    <li>Entrez ce qui suit dans la zone de texte, puis appuyez sur le bouton « Envoyer » :<br><br><code>TRUNCATE stripe ;</code></li>
+</ol>
+
+<h3>Installer le module de paiement</h3>
+<p>Pour effectuer une installation initiale du module de paiement :</p>
+<ol type="A">
+    <li>Décompressez le fichier zip de distribution du module.</li>
+    <li>Renommer le <var>YOUR_TEMPLATE</var> répertoire pour correspondre au nom de votre modèle actuellement actif : <code>/includes/template/YOUR_TEMPLATE</code>.</li>
+    <li>Copiez tous les fichiers et sous-répertoires de la distribution <code>/comprend</code> répertoire vers votre site <code>/comprend</code> répertoire.<ol>
+        <li>/includes/classes/ajax/zcAjaxStripe.php</li>
+        <li>/includes/classes/observers/auto.stripe.php</li>
+        <li>/includes/extra_datafiles/stripe_database_names.php</li>
+        <li>/includes/languages/english/extra_definitions/lang.stripe_extra_definitions.php</li>
+        <li>/includes/languages/english/modules/payment/lang.stripe.php</li>
+        <li>/includes/languages/french/extra_definitions/lang.stripe_extra_definitions.php</li>
+        <li>/includes/languages/french/modules/payment/lang.stripe.php</li>
+        <li>/includes/languages/german/extra_definitions/lang.stripe_extra_definitions.php</li>
+        <li>/includes/languages/german/modules/payment/lang.stripe.php</li>
+        <li>/includes/languages/japanese/extra_definitions/lang.stripe_extra_definitions.php</li>
+        <li>/includes/languages/japanese/modules/payment/lang.stripe.php</li>
+        <li>/includes/modules/pages/account/jscript_stripe_account_form.php</li>
+        <li>/includes/modules/pages/checkout_confirmation/jscript_stripe_checkout_confirmation.php</li>
+        <li>/includes/modules/pages/checkout_one/jscript_stripe_checkout_one.php</li>
+        <li>/includes/modules/pages/checkout_one_confirmation/jscript_stripe_checkout_one_confirmation.php</li>
+        <li>/includes/modules/pages/checkout_payment/jscript_stripe_checkout_payment.php</li>
+        <li>/includes/modules/payment/stripepay/vendor/*. *</li>
+        <li>/includes/modules/payment/stripepay/create.php</li>
+        <li>/includes/modules/payment/stripe.php</li>
+        <li>/includes/templates/YOUR_TEMPLATE/css/stylesheet_stripe.css</li>
+        <li>/includes/checkout.js</li>
+    </ol></li>
+    <li>Accédez aux modules de l’administrateur : : Paiement. Vous verrez le <b>Stripe Payments : Carte de crédit</b> module ajouté. Sélectionnez ce module et <code>Installer</code> it.<br><img src="img_document/image12.jpg" width="447" height="254" border="0"><ul>
+        <li><b>Remarque : Le mode de</b>  test est la valeur par défaut lorsque ce module est installé. Après le test, n’oubliez pas de mettre le mode test sur &quot;false&quot;. Ne divulguez pas la clé secrète fournie par Stripe.</li>
+    </ul></li>
+</ol>
+
+<h3>Mise à niveau du module de paiement</h3>
+<p>Suivez les étapes A à C dans la section précédente (installation).</p>
+
+<h3>Test sur la vitrine (Mode Test)</h3>
+<p>Utilisez ces étapes pour vous assurer que vous avez correctement installé et configuré le module de paiement :</p>
+<ol>
+    <li>Placez un ou plusieurs articles dans votre panier et commencez le processus de paiement.</li>
+    <li>Choisissez le module <b>Stripe Payment : Credit Cardpayment</b>  et passez à l’étape de confirmation du paiement.</li>
+    <li>Le formulaire de saisie de carte Stripe s’affichera comme ci-dessous. Si le formulaire n’apparaît pas, il se peut que vous ayez saisi une clé API incorrecte.<br><br><img src="img_document/image5.jpg" width="480" height="351" border="0"></li>
+    <li>Entrez le numéro de carte de crédit VISA test <var>4242 4242 4242 4242</var>, une date d’expiration qui est dans le futur, un nombre aléatoire de 3 chiffres dans le CVC et le code postal (si demandé). Appuyez sur le bouton « Confirmer la commande ».</li>
+    <li>Allez dans votre tableau de bord <a href="https://dashboard.stripe.com/dashboard">Stripe et</a>  cliquez sur le bouton Payments and Succeeded (Paiements et réussis). Vérifiez le montant total des informations, le nom du client et l’adresse e-mail.</li>
+    <li>Confirmez l’adresse e-mail et le total de la commande sur les <b>clients</b>  de l’administrateur du panier Zen : : Ordre. Comparez le montant total du panier zen, le nom du client et l’adresse e-mail avec les informations de Stripe.</li>
+</ol>
+
+<h3>Supprimer le module de paiement</h3>
+<p>Accédez à l’admin <b>Modules : : Paiement</b>, sélectionnez le <b>Stripe Payments : Carte de crédit</b> module et cliquez dessus <code>Désinstaller</code> bouton.</p>
+
+<h2>Supprimer les enregistrements Stripe des clients</h2>
+<p>Les informations de carte de crédit du client sont cryptées et enregistrées dans la base de données, mais peuvent être supprimées à la discrétion du client. Le client peut le supprimer avec le bouton de suppression des informations de carte de crédit Stripe sur la page « Mon compte ». Après la suppression, cette indication ne sera plus affichée.</p>
+<img src="img_document/image6.jpg" width="467" height="216" border="0">
+
+</body>
+</html>
