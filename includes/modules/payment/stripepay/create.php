@@ -102,7 +102,10 @@ try {
     http_response_code(500);
     $clientS_json = json_encode(['error' => $e->getMessage()]);
 }
-   
+
+zen_define_default('MODULE_PAYMENT_STRIPE_LAYOUT', 'Tabs');
+zen_define_default('TEXT_PAYMENT_STRIPE_PAYMENTSUCCEEDED', 'Payment succeeded. Please wait a few seconds!');
+
 $jason_publishable_key = json_encode($publishable_key);
 $jason_PaymentSuccess = json_encode(TEXT_PAYMENT_STRIPE_PAYMENTSUCCEEDED);
 $jason_FormLayout = json_encode(strtolower(MODULE_PAYMENT_STRIPE_LAYOUT));

@@ -32,7 +32,7 @@ async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
 
-    const response = await stripe.confirmPayment({
+    const stripe_response = await stripe.confirmPayment({
         elements,
         confirmParams: {
             return_url: confirmationURL,
@@ -40,8 +40,16 @@ async function handleSubmit(e) {
         redirect: 'if_required'
     });
   
-    if (response.error) {
-        showMessage(response.error.message);
+    if (stripe_response.error) {
+       zcJS.ajax({
+            url: 'ajax.php?act=ajaxStripe&method=checkCC',
+        }).done(function(response) {
+            if (response.status !== 'ok') {
+                window.location.href = window.location.href;
+            }
+        });
+
+        showMessage(stripe_response.error.message);
     } else {
         showMessage(PaymentSuccess);
         $('div.confirm-order, #checkoutConfirmationDefault-btn-toolbar, #checkoutOneConfirmationButtons').show();
