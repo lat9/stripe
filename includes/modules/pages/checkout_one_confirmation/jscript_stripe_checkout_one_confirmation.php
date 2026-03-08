@@ -1,5 +1,5 @@
 <?php
-if (defined('MODULE_PAYMENT_STRIPE_STATUS') && MODULE_PAYMENT_STRIPE_STATUS === 'True' && $stripe_select === 'True') {
+if (defined('MODULE_PAYMENT_STRIPE_STATUS') && MODULE_PAYMENT_STRIPE_STATUS === 'True' && (($stripe_select ?? '') === 'True')) {
     // -----
     // Gather the order data-related values needed by checkout.js.
     //
