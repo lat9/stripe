@@ -63,12 +63,12 @@ try {
         global $stripeCustomerID;
         $stripeCustomerID = $customer->id;  
 
-        $sql = "INSERT INTO " . TABLE_STRIPE . " (id, customers_id, Stripe_Customers_id)  VALUES (NULL,:custID, :stripeCID )";
+        $sql = "INSERT INTO " . TABLE_STRIPE . " (customers_id, Stripe_Customers_id) VALUES (:custID, :stripeCID)";
         $sql = $db->bindVars($sql, ':custID', $_SESSION['customer_id'], 'integer');
         $sql = $db->bindVars($sql, ':stripeCID', $stripeCustomerID, 'string');
         $db->Execute($sql);
     } elseif ($test_mode === false){
-        $stripeCustomerID = $stripe_customer->fields['stripe_customers_id'];
+        $stripeCustomerID = $stripe_customer->fields['Stripe_Customers_id'];
     }
 
 
